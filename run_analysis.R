@@ -64,4 +64,19 @@ relevantdata <- select(fulldata, Subject, ActivityLabel, measures)
 
 #### 4 Descriptors ####
 
+# The following command assigns values based on the matched activity using the column
+# ActivityLabel created for relevant data, and the data frame "activity_labels" created earlier  
+relevantdata$ActivityLabel <- activity_labels$V2[match(relevantdata$ActivityLabel,activity_labels$V1)]
 
+#### 5 Column Labels ####
+
+# We have already labeled all our columns earlier in the code, creating titles "ActivityLabel" and "Subject"
+# for the subject and activity, and importing the measurement names from the features file
+
+#### 6 New Tidy Data ####
+
+# For this exercise we will melt and recast the data set to create the tidy set
+
+meltdata <- melt(relevantdata,id.vars = c("Subject","ActivityLabel"))
+
+finaldata <- dcast(meltdata, Subject + ActivityLabel ~ variable, fun.aggregate = mean)
